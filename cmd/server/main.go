@@ -3,7 +3,9 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/ropehapi/desafio-stone/configs"
+	webserver2 "github.com/ropehapi/desafio-stone/internal/infra/web/webserver"
 )
 
 func main() {
@@ -17,4 +19,10 @@ func main() {
 		panic(err)
 	}
 	defer db.Close()
+
+	webserver := webserver2.NewWebServer(configs.WebServerPort)
+	webPersonHandler := NewWebPersonHandler(db)
+	webserver.RegisterRoutes("/person", webPersonHandler.Create)
+	fmt.Println("Starting web server on port", configs.WebServerPort)
+	webserver.Serve()
 }

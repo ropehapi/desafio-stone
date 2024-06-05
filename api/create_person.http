@@ -1,0 +1,7 @@
+POST http://localhost:8000/person HTTP/2
+Host: localhost:8000
+Content-Type: application/json
+
+{
+  "name": "Pedro"
+}
