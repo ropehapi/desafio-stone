@@ -3,12 +3,12 @@ package entity
 import "errors"
 
 type Person struct {
-	ID            int
+	ID            string
 	Name          string
 	Relationships []Relationship
 }
 
-func NewPerson(id int, name string) *Person {
+func NewPerson(id, name string) *Person {
 	return &Person{
 		ID:   id,
 		Name: name,

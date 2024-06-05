@@ -22,7 +22,7 @@ func (r *Relationship) IsValid() error {
 		return errors.New("relationship parent is empty")
 	}
 	for _, rel := range r.Parent.Relationships {
-		visited := make(map[int]bool)
+		visited := make(map[string]bool)
 		if hasCycle(rel, visited) {
 			return errors.New("cycle detected")
 		}
@@ -31,7 +31,7 @@ func (r *Relationship) IsValid() error {
 }
 
 // Função que verifica se existe um ciclo na relação
-func hasCycle(rel Relationship, visited map[int]bool) bool {
+func hasCycle(rel Relationship, visited map[string]bool) bool {
 	// Se o Parent for nulo, retornamos falso pois atingimos o final do relacionamento
 	if rel.Parent == nil {
 		return false
