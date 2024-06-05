@@ -1,0 +1,12 @@
+# Checklist
+- [x] Modelar banco de dados de acordo com a regra de negócio
+- [ ] Escrever a camada de domínio
+    - [ ] Implementar validações
+      - [ ] Filho obrigatóriamente deve ter pai e mãe
+      - [ ] Filho não pode ser seu próprio descendente
+- [ ] Escrever os usecases
+- [ ] Escrever a camada de persistência
+- [ ] Escrever a camada Web
+- [ ] Implementar testes em tudo
+- [ ] Documentar a aplicação
+- [ ] Documentar o desenvolvimento
