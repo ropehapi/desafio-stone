@@ -74,3 +74,17 @@ func (r *PersonRepository) FindAll() ([]entity.Person, error) {
 
 	return persons, nil
 }
+
+func (r *PersonRepository) Update(id string, p *entity.Person) error {
+	stmt, err := r.DB.Prepare("UPDATE person SET name=? WHERE id=?")
+	if err != nil {
+		return err
+	}
+
+	_, err = stmt.Exec(p.Name, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

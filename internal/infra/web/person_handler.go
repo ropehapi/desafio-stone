@@ -9,12 +9,12 @@ import (
 )
 
 type WebPersonHandler struct {
-	PersonRepositoty entity.PersonRepositoryInterface
+	PersonRepository entity.PersonRepositoryInterface
 }
 
 func NewWebPersonHandler(OrderRepository entity.PersonRepositoryInterface) *WebPersonHandler {
 	return &WebPersonHandler{
-		PersonRepositoty: OrderRepository,
+		PersonRepository: OrderRepository,
 	}
 }
 
@@ -26,7 +26,7 @@ func (h *WebPersonHandler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	createPersonUsecase := usecase.NewCreatePersonUseCase(h.PersonRepositoty)
+	createPersonUsecase := usecase.NewCreatePersonUseCase(h.PersonRepository)
 
 	output, err := createPersonUsecase.Execute(dto)
 	if err != nil {
@@ -46,7 +46,7 @@ func (h *WebPersonHandler) Get(w http.ResponseWriter, r *http.Request) {
 		ID: chi.URLParam(r, "id"),
 	}
 
-	getPersonUsecase := usecase.NewGetPersonUseCase(h.PersonRepositoty)
+	getPersonUsecase := usecase.NewGetPersonUseCase(h.PersonRepository)
 
 	output, err := getPersonUsecase.Execute(dto)
 	if err != nil {
@@ -62,9 +62,31 @@ func (h *WebPersonHandler) Get(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *WebPersonHandler) List(w http.ResponseWriter, r *http.Request) {
-	listPersonUsecase := usecase.NewListPersonUseCase(h.PersonRepositoty)
+	listPersonUsecase := usecase.NewListPersonUseCase(h.PersonRepository)
 
 	output, err := listPersonUsecase.Execute()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	err = json.NewEncoder(w).Encode(output)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+func (h *WebPersonHandler) Update(w http.ResponseWriter, r *http.Request) {
+	var dto usecase.CreatePersonUseCaseInputDTO
+	err := json.NewDecoder(r.Body).Decode(&dto)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	updatePersonUsecase := usecase.NewUpdatePersonUsecase(h.PersonRepository)
+	output, err := updatePersonUsecase.Execute(chi.URLParam(r, "id"), dto)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
