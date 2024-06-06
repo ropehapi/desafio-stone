@@ -24,6 +24,7 @@ func main() {
 	defer db.Close()
 
 	webPersonHandler := NewWebPersonHandler(db)
+	webRelationshipHandler := NewWebRelationshipHandler(db)
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
@@ -34,6 +35,8 @@ func main() {
 	r.Get("/person", webPersonHandler.List)
 	r.Put("/person/{id}", webPersonHandler.Update)
 	r.Delete("/person/{id}", webPersonHandler.Delete)
+
+	r.Post("/relationship", webRelationshipHandler.Create)
 
 	err = http.ListenAndServe(configs.WebServerPort, r)
 	if err != nil {

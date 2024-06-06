@@ -7,3 +7,7 @@ type PersonRepositoryInterface interface {
 	Update(id string, p *Person) error
 	Delete(id string) error
 }
+
+type RelationshipRepositoryInterface interface {
+	Save(r *Relationship) error
+}

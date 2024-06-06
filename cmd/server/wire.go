@@ -17,6 +17,13 @@ var setPersonRepositoryDependecy = wire.NewSet(
 	wire.Bind(new(entity.PersonRepositoryInterface), new(*database.PersonRepository)),
 )
 
+var setRelationshipRepositoryDependecy = wire.NewSet(
+	database.NewPersonRepository,
+	database.NewRelationshipRepository,
+	wire.Bind(new(entity.PersonRepositoryInterface), new(*database.PersonRepository)),
+	wire.Bind(new(entity.RelationshipRepositoryInterface), new(*database.RelationshipRepository)),
+)
+
 func NewCreatePersonUseCase(db *sql.DB) *usecase.CreatePersonUseCase {
 	wire.Build(
 		setPersonRepositoryDependecy,
@@ -31,4 +38,12 @@ func NewWebPersonHandler(db *sql.DB) *web.WebPersonHandler {
 		web.NewWebPersonHandler,
 	)
 	return &web.WebPersonHandler{}
+}
+
+func NewWebRelationshipHandler(db *sql.DB) *web.WebRelationshipHandler {
+	wire.Build(
+		setRelationshipRepositoryDependecy,
+		web.NewWebRelationshipHandler,
+	)
+	return &web.WebRelationshipHandler{}
 }

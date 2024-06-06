@@ -15,6 +15,10 @@ import (
 	"github.com/ropehapi/desafio-stone/internal/infra/web"
 )
 
+import (
+	_ "github.com/go-sql-driver/mysql"
+)
+
 // Injectors from wire.go:
 
 func NewCreatePersonUseCase(db *sql.DB) *usecase.CreatePersonUseCase {
@@ -29,6 +33,15 @@ func NewWebPersonHandler(db *sql.DB) *web.WebPersonHandler {
 	return webPersonHandler
 }
 
+func NewWebRelationshipHandler(db *sql.DB) *web.WebRelationshipHandler {
+	personRepository := database.NewPersonRepository(db)
+	relationshipRepository := database.NewRelationshipRepository(db)
+	webRelationshipHandler := web.NewWebRelationshipHandler(personRepository, relationshipRepository)
+	return webRelationshipHandler
+}
+
 // wire.go:
 
 var setPersonRepositoryDependecy = wire.NewSet(database.NewPersonRepository, wire.Bind(new(entity.PersonRepositoryInterface), new(*database.PersonRepository)))
+
+var setRelationshipRepositoryDependecy = wire.NewSet(database.NewPersonRepository, database.NewRelationshipRepository, wire.Bind(new(entity.PersonRepositoryInterface), new(*database.PersonRepository)), wire.Bind(new(entity.RelationshipRepositoryInterface), new(*database.RelationshipRepository)))
