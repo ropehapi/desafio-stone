@@ -24,7 +24,7 @@ func NewCreatePersonUseCase(personRepository entity.PersonRepositoryInterface) *
 	}
 }
 
-func (uc *CreatePersonUseCase) Exec(input CreatePersonUseCaseInputDTO) (PersonUseCaseOutputDTO, error) {
+func (uc *CreatePersonUseCase) Execute(input CreatePersonUseCaseInputDTO) (PersonUseCaseOutputDTO, error) {
 	person := &entity.Person{
 		ID:   uuid.New().String(),
 		Name: input.Name,

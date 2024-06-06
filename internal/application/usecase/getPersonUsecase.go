@@ -16,7 +16,7 @@ func NewGetPersonUseCase(personRepository entity.PersonRepositoryInterface) *Get
 	}
 }
 
-func (uc *GetPersonUseCase) Exec(input GetPersonUseCaseInputDTO) (PersonUseCaseOutputDTO, error) {
+func (uc *GetPersonUseCase) Execute(input GetPersonUseCaseInputDTO) (PersonUseCaseOutputDTO, error) {
 	person, err := uc.PersonRepository.FindById(input.ID)
 	if err != nil {
 		return PersonUseCaseOutputDTO{}, err

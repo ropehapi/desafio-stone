@@ -47,3 +47,30 @@ func (r *PersonRepository) FindById(id string) (*entity.Person, error) {
 
 	return &person, nil
 }
+
+func (r *PersonRepository) FindAll() ([]entity.Person, error) {
+	stmt, err := r.DB.Prepare("SELECT id, name FROM person")
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := stmt.Query()
+	if err != nil {
+		return nil, err
+	}
+
+	var persons []entity.Person
+	for rows.Next() {
+		var person entity.Person
+		err = rows.Scan(
+			&person.ID,
+			&person.Name,
+		)
+		if err != nil {
+			return nil, err
+		}
+		persons = append(persons, person)
+	}
+
+	return persons, nil
+}

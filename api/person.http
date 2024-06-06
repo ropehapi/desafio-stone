@@ -9,3 +9,7 @@ Content-Type: application/json
 ###
 
 GET http://localhost:8000/person/ba5b336e-5d2b-4eed-979d-b4835b868782 HTTP/2
+
+###
+
+GET http://localhost:8000/person HTTP/2

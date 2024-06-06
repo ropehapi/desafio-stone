@@ -28,7 +28,7 @@ func (h *WebPersonHandler) Create(w http.ResponseWriter, r *http.Request) {
 
 	createPersonUsecase := usecase.NewCreatePersonUseCase(h.PersonRepositoty)
 
-	output, err := createPersonUsecase.Exec(dto)
+	output, err := createPersonUsecase.Execute(dto)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -48,7 +48,23 @@ func (h *WebPersonHandler) Get(w http.ResponseWriter, r *http.Request) {
 
 	getPersonUsecase := usecase.NewGetPersonUseCase(h.PersonRepositoty)
 
-	output, err := getPersonUsecase.Exec(dto)
+	output, err := getPersonUsecase.Execute(dto)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	err = json.NewEncoder(w).Encode(output)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+func (h *WebPersonHandler) List(w http.ResponseWriter, r *http.Request) {
+	listPersonUsecase := usecase.NewListPersonUseCase(h.PersonRepositoty)
+
+	output, err := listPersonUsecase.Execute()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

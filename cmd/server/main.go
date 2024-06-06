@@ -31,6 +31,7 @@ func main() {
 
 	r.Post("/person", webPersonHandler.Create)
 	r.Get("/person/{id}", webPersonHandler.Get)
+	r.Get("/person", webPersonHandler.List)
 
 	err = http.ListenAndServe(configs.WebServerPort, r)
 	if err != nil {
