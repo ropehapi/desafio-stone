@@ -33,6 +33,7 @@ func main() {
 	r.Get("/person/{id}", webPersonHandler.Get)
 	r.Get("/person", webPersonHandler.List)
 	r.Put("/person/{id}", webPersonHandler.Update)
+	r.Delete("/person/{id}", webPersonHandler.Delete)
 
 	err = http.ListenAndServe(configs.WebServerPort, r)
 	if err != nil {

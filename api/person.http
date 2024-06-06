@@ -1,5 +1,4 @@
 POST http://localhost:8000/person HTTP/2
-Host: localhost:8000
 Content-Type: application/json
 
 {
@@ -13,3 +12,16 @@ GET http://localhost:8000/person/ba5b336e-5d2b-4eed-979d-b4835b868782 HTTP/2
 ###
 
 GET http://localhost:8000/person HTTP/2
+
+###
+
+PUT http://localhost:8000/person/4fab833f-06be-46ad-a316-c308994a0efa HTTP/2
+Content-Type: application/json
+
+{
+  "name": "Haruo"
+}
+
+###
+
+DELETE http://localhost:8000/person/6ad7ca78-8be7-4459-a292-32d91c3556bf HTTP/2

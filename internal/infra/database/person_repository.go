@@ -88,3 +88,17 @@ func (r *PersonRepository) Update(id string, p *entity.Person) error {
 
 	return nil
 }
+
+func (r *PersonRepository) Delete(id string) error {
+	stmt, err := r.DB.Prepare("DELETE FROM person WHERE id=?")
+	if err != nil {
+		return err
+	}
+
+	_, err = stmt.Exec(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

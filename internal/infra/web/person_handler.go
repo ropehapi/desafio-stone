@@ -98,3 +98,13 @@ func (h *WebPersonHandler) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func (h *WebPersonHandler) Delete(w http.ResponseWriter, r *http.Request) {
+	deletePersonUsecase := usecase.NewDeletePersonUseCase(h.PersonRepository)
+
+	err := deletePersonUsecase.Execute(chi.URLParam(r, "id"))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}

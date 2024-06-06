@@ -5,4 +5,5 @@ type PersonRepositoryInterface interface {
 	FindById(id string) (*Person, error)
 	FindAll() ([]Person, error)
 	Update(id string, p *Person) error
+	Delete(id string) error
 }
