@@ -5,6 +5,9 @@
       - [ ] Filho obrigatóriamente deve ter pai e mãe
       - [ ] Filho não pode ser seu próprio descendente
 - [ ] Escrever os usecases
+  - [ ] Crud de pessoa
+  - [ ] Crud de relacionamento
+  - [ ] Get tree
 - [ ] Escrever a camada de persistência
 - [ ] Escrever a camada Web
 - [ ] Implementar testes em tudo

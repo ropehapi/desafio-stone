@@ -1,0 +1,11 @@
+POST http://localhost:8000/person HTTP/2
+Host: localhost:8000
+Content-Type: application/json
+
+{
+  "name": "Pietra"
+}
+
+###
+
+GET http://localhost:8000/person/ba5b336e-5d2b-4eed-979d-b4835b868782 HTTP/2

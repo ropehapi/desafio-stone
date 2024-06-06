@@ -9,7 +9,7 @@ type CreatePersonUseCaseInputDTO struct {
 	Name string `json:"name"`
 }
 
-type CreatePersonUseCaseOutputDTO struct {
+type PersonUseCaseOutputDTO struct {
 	Id   string `json:"id"`
 	Name string `json:"name"`
 }
@@ -24,20 +24,20 @@ func NewCreatePersonUseCase(personRepository entity.PersonRepositoryInterface) *
 	}
 }
 
-func (uc *CreatePersonUseCase) Exec(input CreatePersonUseCaseInputDTO) (CreatePersonUseCaseOutputDTO, error) {
+func (uc *CreatePersonUseCase) Exec(input CreatePersonUseCaseInputDTO) (PersonUseCaseOutputDTO, error) {
 	person := &entity.Person{
 		ID:   uuid.New().String(),
 		Name: input.Name,
 	}
 	if err := person.IsValid(); err != nil {
-		return CreatePersonUseCaseOutputDTO{}, err
+		return PersonUseCaseOutputDTO{}, err
 	}
 
 	if err := uc.PersonRepository.Save(person); err != nil {
-		return CreatePersonUseCaseOutputDTO{}, err
+		return PersonUseCaseOutputDTO{}, err
 	}
 
-	return CreatePersonUseCaseOutputDTO{
+	return PersonUseCaseOutputDTO{
 		Id:   person.ID,
 		Name: person.Name,
 	}, nil

@@ -3,9 +3,12 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/ropehapi/desafio-stone/configs"
-	webserver2 "github.com/ropehapi/desafio-stone/internal/infra/web/webserver"
+	"net/http"
+	"time"
 )
 
 func main() {
@@ -20,9 +23,18 @@ func main() {
 	}
 	defer db.Close()
 
-	webserver := webserver2.NewWebServer(configs.WebServerPort)
 	webPersonHandler := NewWebPersonHandler(db)
-	webserver.RegisterRoutes("/person", webPersonHandler.Create)
+
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+	r.Use(middleware.Timeout(60 * time.Second))
+
+	r.Post("/person", webPersonHandler.Create)
+	r.Get("/person/{id}", webPersonHandler.Get)
+
+	err = http.ListenAndServe(configs.WebServerPort, r)
+	if err != nil {
+		panic(err)
+	}
 	fmt.Println("Starting web server on port", configs.WebServerPort)
-	webserver.Serve()
 }
