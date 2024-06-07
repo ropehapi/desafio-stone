@@ -2,6 +2,7 @@ package web
 
 import (
 	"encoding/json"
+	"github.com/go-chi/chi/v5"
 	"github.com/ropehapi/desafio-stone/internal/application/usecase"
 	"github.com/ropehapi/desafio-stone/internal/entity"
 	"net/http"
@@ -16,6 +17,21 @@ func NewWebRelationshipHandler(personRepository entity.PersonRepositoryInterface
 	return &WebRelationshipHandler{
 		PersonRepository:       personRepository,
 		RelationshipRepository: relationshipRepository,
+	}
+}
+
+func (h *WebRelationshipHandler) GetTree(w http.ResponseWriter, r *http.Request) {
+	getTreeUsecase := usecase.NewGetPersonTreeUseCase(h.PersonRepository, h.RelationshipRepository)
+
+	output, err := getTreeUsecase.Execute(chi.URLParam(r, "id"))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(output)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 }
 

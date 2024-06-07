@@ -3,9 +3,9 @@ package entity
 import "errors"
 
 type Person struct {
-	ID            string
-	Name          string
-	Relationships []Relationship
+	ID            string         `json:"id"`
+	Name          string         `json:"name"`
+	Relationships []Relationship `json:"relationships"`
 }
 
 func NewPerson(id, name string) *Person {

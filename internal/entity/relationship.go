@@ -3,8 +3,8 @@ package entity
 import "errors"
 
 type Relationship struct {
-	Children *Person
-	Parent   *Person
+	Children *Person `json:"children,omitempty"`
+	Parent   *Person `json:"parent,omitempty"`
 }
 
 func NewRelationship(children, parent *Person) *Relationship {

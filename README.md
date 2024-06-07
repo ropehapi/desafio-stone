@@ -1,15 +1,15 @@
 # Checklist
 - [x] Modelar banco de dados de acordo com a regra de negócio
-- [ ] Escrever a camada de domínio
-    - [ ] Implementar validações
-      - [ ] Filho obrigatóriamente deve ter pai e mãe
-      - [ ] Filho não pode ser seu próprio descendente
+- [x] Escrever a camada de domínio
+    - [x] Implementar validações
+      - [x] Filho obrigatóriamente deve ter pai e mãe
+      - [x] Filho não pode ser seu próprio descendente
+- [x] Escrever a camada de persistência
+- [x] Escrever a camada Web
 - [ ] Escrever os usecases
-  - [ ] Crud de pessoa
+  - [x] Crud de pessoa
   - [ ] Crud de relacionamento
-  - [ ] Get tree
-- [ ] Escrever a camada de persistência
-- [ ] Escrever a camada Web
+  - [x] Get tree
 - [ ] Implementar testes em tudo
 - [ ] Documentar a aplicação
 - [ ] Documentar o desenvolvimento

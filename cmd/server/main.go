@@ -36,6 +36,7 @@ func main() {
 	r.Put("/person/{id}", webPersonHandler.Update)
 	r.Delete("/person/{id}", webPersonHandler.Delete)
 
+	r.Get("/tree/{id}", webRelationshipHandler.GetTree)
 	r.Post("/relationship", webRelationshipHandler.Create)
 
 	err = http.ListenAndServe(configs.WebServerPort, r)
