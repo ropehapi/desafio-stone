@@ -5,7 +5,7 @@ import (
 	"github.com/ropehapi/desafio-stone/internal/entity"
 )
 
-type CreatePersonUseCaseInputDTO struct {
+type CreateUpdatePersonUsecaseInputDTO struct {
 	Name string `json:"name"`
 }
 
@@ -24,20 +24,17 @@ func NewCreatePersonUseCase(personRepository entity.PersonRepositoryInterface) *
 	}
 }
 
-func (uc *CreatePersonUseCase) Execute(input CreatePersonUseCaseInputDTO) (PersonUseCaseOutputDTO, error) {
-	person := &entity.Person{
-		ID:   uuid.New().String(),
-		Name: input.Name,
-	}
+func (uc *CreatePersonUseCase) Execute(input CreateUpdatePersonUsecaseInputDTO) (*PersonUseCaseOutputDTO, error) {
+	person := entity.NewPerson(uuid.New().String(), input.Name)
 	if err := person.IsValid(); err != nil {
-		return PersonUseCaseOutputDTO{}, err
+		return nil, err
 	}
 
 	if err := uc.PersonRepository.Save(person); err != nil {
-		return PersonUseCaseOutputDTO{}, err
+		return nil, err
 	}
 
-	return PersonUseCaseOutputDTO{
+	return &PersonUseCaseOutputDTO{
 		Id:   person.ID,
 		Name: person.Name,
 	}, nil

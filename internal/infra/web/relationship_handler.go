@@ -26,12 +26,14 @@ func (h *WebRelationshipHandler) GetTree(w http.ResponseWriter, r *http.Request)
 	output, err := getTreeUsecase.Execute(chi.URLParam(r, "id"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w).Encode(output)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 }
 
@@ -40,6 +42,7 @@ func (h *WebRelationshipHandler) Create(w http.ResponseWriter, r *http.Request) 
 	err := json.NewDecoder(r.Body).Decode(&dto)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	createRelationshipUsecase := usecase.NewCreateRelationshipUsecase(h.PersonRepository, h.RelationshipRepository)
@@ -47,11 +50,13 @@ func (h *WebRelationshipHandler) Create(w http.ResponseWriter, r *http.Request) 
 	outputDto, err := createRelationshipUsecase.Execute(dto)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
 	err = json.NewEncoder(w).Encode(outputDto)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 }

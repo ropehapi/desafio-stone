@@ -35,7 +35,7 @@ func (uc *GetPersonTreeUseCase) Execute(id string) (GetPersonTreeUsecaseOutputDT
 
 func (uc *GetPersonTreeUseCase) buildTree(id string, person *entity.Person) ([]entity.Relationship, error) {
 	person, _ = uc.PersonRepository.FindById(id)
-	relationshipsIds, _ := uc.PersonRepository.GetRelationShipsIds(id)
+	relationshipsIds, _ := uc.RelationshipRepository.GetRelationShipsIdsFromPersonId(id)
 
 	numberOfRelationships := len(relationshipsIds)
 	relationships := make([]entity.Relationship, numberOfRelationships)

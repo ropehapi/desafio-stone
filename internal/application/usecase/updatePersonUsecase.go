@@ -12,20 +12,20 @@ func NewUpdatePersonUsecase(personRepository entity.PersonRepositoryInterface) U
 	}
 }
 
-func (uc UpdatePersonUsecase) Execute(id string, input CreatePersonUseCaseInputDTO) (PersonUseCaseOutputDTO, error) {
+func (uc UpdatePersonUsecase) Execute(id string, input CreateUpdatePersonUsecaseInputDTO) (*PersonUseCaseOutputDTO, error) {
 	person := &entity.Person{
 		Name: input.Name,
 	}
 
 	if err := person.IsValid(); err != nil {
-		return PersonUseCaseOutputDTO{}, err
+		return nil, err
 	}
 
 	if err := uc.personRepository.Update(id, person); err != nil {
-		return PersonUseCaseOutputDTO{}, err
+		return nil, err
 	}
 
-	return PersonUseCaseOutputDTO{
+	return &PersonUseCaseOutputDTO{
 		Id:   id,
 		Name: person.Name,
 	}, nil

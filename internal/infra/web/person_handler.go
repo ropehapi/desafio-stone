@@ -19,7 +19,7 @@ func NewWebPersonHandler(OrderRepository entity.PersonRepositoryInterface) *WebP
 }
 
 func (h *WebPersonHandler) Create(w http.ResponseWriter, r *http.Request) {
-	var dto usecase.CreatePersonUseCaseInputDTO
+	var dto usecase.CreateUpdatePersonUsecaseInputDTO
 	err := json.NewDecoder(r.Body).Decode(&dto)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -34,6 +34,7 @@ func (h *WebPersonHandler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.WriteHeader(http.StatusCreated)
 	err = json.NewEncoder(w).Encode(output)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -42,13 +43,9 @@ func (h *WebPersonHandler) Create(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *WebPersonHandler) Get(w http.ResponseWriter, r *http.Request) {
-	dto := usecase.GetPersonUseCaseInputDTO{
-		ID: chi.URLParam(r, "id"),
-	}
-
 	getPersonUsecase := usecase.NewGetPersonUseCase(h.PersonRepository)
 
-	output, err := getPersonUsecase.Execute(dto)
+	output, err := getPersonUsecase.Execute(chi.URLParam(r, "id"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -78,7 +75,7 @@ func (h *WebPersonHandler) List(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *WebPersonHandler) Update(w http.ResponseWriter, r *http.Request) {
-	var dto usecase.CreatePersonUseCaseInputDTO
+	var dto usecase.CreateUpdatePersonUsecaseInputDTO
 	err := json.NewDecoder(r.Body).Decode(&dto)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)

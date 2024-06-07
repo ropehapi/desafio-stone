@@ -2,10 +2,6 @@ package usecase
 
 import "github.com/ropehapi/desafio-stone/internal/entity"
 
-type GetPersonUseCaseInputDTO struct {
-	ID string `json:"id"`
-}
-
 type GetPersonUseCase struct {
 	PersonRepository entity.PersonRepositoryInterface
 }
@@ -16,13 +12,13 @@ func NewGetPersonUseCase(personRepository entity.PersonRepositoryInterface) *Get
 	}
 }
 
-func (uc *GetPersonUseCase) Execute(input GetPersonUseCaseInputDTO) (PersonUseCaseOutputDTO, error) {
-	person, err := uc.PersonRepository.FindById(input.ID)
+func (uc *GetPersonUseCase) Execute(id string) (*PersonUseCaseOutputDTO, error) {
+	person, err := uc.PersonRepository.FindById(id)
 	if err != nil {
-		return PersonUseCaseOutputDTO{}, err
+		return nil, err
 	}
 
-	return PersonUseCaseOutputDTO{
+	return &PersonUseCaseOutputDTO{
 		Id:   person.ID,
 		Name: person.Name,
 	}, nil

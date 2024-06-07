@@ -1,0 +1,11 @@
+POST http://localhost:8000/relationship HTTP/2
+Content-Type: application/json
+
+{
+  "childrenId": "",
+  "parentId": ""
+}
+
+###
+
+GET http://localhost:8000/tree/8a2b7099-97ef-48d1-97a1-948a2aa468ff HTTP/2
