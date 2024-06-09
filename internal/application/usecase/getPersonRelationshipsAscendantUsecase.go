@@ -20,22 +20,22 @@ func NewGetPersonRelationshipsAscendantUsecase(personRepository entity.PersonRep
 	}
 }
 
-func (uc *GetPersonRelationshipsAscendantUsecase) Execute(id string) (GetPersonTreeUsecaseOutputDTO, error) {
+func (uc *GetPersonRelationshipsAscendantUsecase) Execute(id string) (*GetPersonTreeUsecaseOutputDTO, error) {
 	person, _ := uc.PersonRepository.FindById(id)
 	relationships, err := uc.buildTree(id, person)
 	if err != nil {
-		return GetPersonTreeUsecaseOutputDTO{}, err
+		return nil, err
 	}
 	person.Relationships = relationships
 
-	return GetPersonTreeUsecaseOutputDTO{
+	return &GetPersonTreeUsecaseOutputDTO{
 		Person: *person,
 	}, nil
 }
 
 func (uc *GetPersonRelationshipsAscendantUsecase) buildTree(id string, person *entity.Person) ([]entity.Relationship, error) {
 	person, _ = uc.PersonRepository.FindById(id)
-	relationshipsIds, _ := uc.RelationshipRepository.GetRelationShipsIdsFromPersonId(id)
+	relationshipsIds, _ := uc.RelationshipRepository.GetParentIdsFromPersonId(id)
 
 	numberOfRelationships := len(relationshipsIds)
 	relationships := make([]entity.Relationship, numberOfRelationships)

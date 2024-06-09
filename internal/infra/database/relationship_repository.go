@@ -15,8 +15,34 @@ func NewRelationshipRepository(db *sql.DB) *RelationshipRepository {
 	}
 }
 
-func (r *RelationshipRepository) GetRelationShipsIdsFromPersonId(id string) ([]string, error) {
+func (r *RelationshipRepository) GetParentIdsFromPersonId(id string) ([]string, error) {
 	stmt, err := r.DB.Prepare("SELECT parent_id FROM relationship WHERE children_id=?")
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := stmt.Query(id)
+	if err != nil {
+		return nil, err
+	}
+
+	var relationshipsIds []string
+	for rows.Next() {
+		var relationshipId string
+		err = rows.Scan(
+			&relationshipId,
+		)
+		if err != nil {
+			return nil, err
+		}
+		relationshipsIds = append(relationshipsIds, relationshipId)
+	}
+
+	return relationshipsIds, nil
+}
+
+func (r *RelationshipRepository) GetChildrenIdsFromPersonId(id string) ([]string, error) {
+	stmt, err := r.DB.Prepare("SELECT children_id FROM relationship WHERE parent_id=?")
 	if err != nil {
 		return nil, err
 	}

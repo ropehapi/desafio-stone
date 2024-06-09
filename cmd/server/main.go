@@ -37,6 +37,7 @@ func main() {
 	r.Delete("/person/{id}", webPersonHandler.Delete)
 
 	r.Get("/relationship/{id}/asc", webRelationshipHandler.GetRelationshipsAscendant)
+	r.Get("/relationship/{id}/desc", webRelationshipHandler.GetRelationshipsDescendant)
 	r.Post("/relationship", webRelationshipHandler.Create)
 	r.Delete("/relationship", webRelationshipHandler.Delete)
 

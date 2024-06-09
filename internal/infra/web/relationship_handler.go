@@ -37,6 +37,23 @@ func (h *WebRelationshipHandler) GetRelationshipsAscendant(w http.ResponseWriter
 	}
 }
 
+func (h *WebRelationshipHandler) GetRelationshipsDescendant(w http.ResponseWriter, r *http.Request) {
+	getPersonRelationshipsDescendantUsecase := usecase.NewGetPersonRelationshipsDescendantUsecase(h.PersonRepository, h.RelationshipRepository)
+
+	output, err := getPersonRelationshipsDescendantUsecase.Execute(chi.URLParam(r, "id"))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	err = json.NewEncoder(w).Encode(output)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+}
+
 func (h *WebRelationshipHandler) Create(w http.ResponseWriter, r *http.Request) {
 	var dto usecase.CreateRelationshipInputDTO
 	err := json.NewDecoder(r.Body).Decode(&dto)

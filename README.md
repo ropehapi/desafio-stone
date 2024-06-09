@@ -6,10 +6,12 @@
       - [x] Filho não pode ser seu próprio descendente
 - [x] Escrever a camada de persistência
 - [x] Escrever a camada Web
-- [ ] Escrever os usecases
+- [x] Escrever os usecases
   - [x] Crud de pessoa
-  - [ ] Crud de relacionamento
+  - [x] Crud de relacionamento
   - [x] Get tree
 - [ ] Implementar testes em tudo
-- [ ] Documentar a aplicação
-- [ ] Documentar o desenvolvimento
+- [ ] Conteinerizar a aplicação
+- [ ] Documentar a aplicação com swagger
+- [ ] Documentar o projeto
+- [ ] Documentar o desenvolvimento (vídeo)
