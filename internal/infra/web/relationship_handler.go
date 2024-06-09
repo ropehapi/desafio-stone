@@ -20,10 +20,10 @@ func NewWebRelationshipHandler(personRepository entity.PersonRepositoryInterface
 	}
 }
 
-func (h *WebRelationshipHandler) GetTree(w http.ResponseWriter, r *http.Request) {
-	getTreeUsecase := usecase.NewGetPersonTreeUseCase(h.PersonRepository, h.RelationshipRepository)
+func (h *WebRelationshipHandler) GetRelationshipsAscendant(w http.ResponseWriter, r *http.Request) {
+	getPersonRelationshipsAscendantUsecase := usecase.NewGetPersonRelationshipsAscendantUsecase(h.PersonRepository, h.RelationshipRepository)
 
-	output, err := getTreeUsecase.Execute(chi.URLParam(r, "id"))
+	output, err := getPersonRelationshipsAscendantUsecase.Execute(chi.URLParam(r, "id"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
@@ -55,6 +55,23 @@ func (h *WebRelationshipHandler) Create(w http.ResponseWriter, r *http.Request) 
 
 	w.WriteHeader(http.StatusCreated)
 	err = json.NewEncoder(w).Encode(outputDto)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+}
+
+func (h *WebRelationshipHandler) Delete(w http.ResponseWriter, r *http.Request) {
+	var dto usecase.DeleteRelationshipUsecaseInputDTO
+	err := json.NewDecoder(r.Body).Decode(&dto)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	deleteRelationshipUsecase := usecase.NewDeleteRelationshipUsecase(h.RelationshipRepository)
+
+	err = deleteRelationshipUsecase.Execute(dto)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

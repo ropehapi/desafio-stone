@@ -9,6 +9,7 @@ type PersonRepositoryInterface interface {
 }
 
 type RelationshipRepositoryInterface interface {
-	Save(r *Relationship) error
 	GetRelationShipsIdsFromPersonId(id string) ([]string, error)
+	Save(r *Relationship) error
+	Delete(childrenId, parentId string) error
 }

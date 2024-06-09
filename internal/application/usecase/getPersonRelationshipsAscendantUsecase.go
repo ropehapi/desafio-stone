@@ -8,19 +8,19 @@ type GetPersonTreeUsecaseOutputDTO struct {
 	Person entity.Person `json:"person"`
 }
 
-type GetPersonTreeUseCase struct {
+type GetPersonRelationshipsAscendantUsecase struct {
 	PersonRepository       entity.PersonRepositoryInterface
 	RelationshipRepository entity.RelationshipRepositoryInterface
 }
 
-func NewGetPersonTreeUseCase(personRepository entity.PersonRepositoryInterface, relationshipRepository entity.RelationshipRepositoryInterface) *GetPersonTreeUseCase {
-	return &GetPersonTreeUseCase{
+func NewGetPersonRelationshipsAscendantUsecase(personRepository entity.PersonRepositoryInterface, relationshipRepository entity.RelationshipRepositoryInterface) *GetPersonRelationshipsAscendantUsecase {
+	return &GetPersonRelationshipsAscendantUsecase{
 		PersonRepository:       personRepository,
 		RelationshipRepository: relationshipRepository,
 	}
 }
 
-func (uc *GetPersonTreeUseCase) Execute(id string) (GetPersonTreeUsecaseOutputDTO, error) {
+func (uc *GetPersonRelationshipsAscendantUsecase) Execute(id string) (GetPersonTreeUsecaseOutputDTO, error) {
 	person, _ := uc.PersonRepository.FindById(id)
 	relationships, err := uc.buildTree(id, person)
 	if err != nil {
@@ -33,7 +33,7 @@ func (uc *GetPersonTreeUseCase) Execute(id string) (GetPersonTreeUsecaseOutputDT
 	}, nil
 }
 
-func (uc *GetPersonTreeUseCase) buildTree(id string, person *entity.Person) ([]entity.Relationship, error) {
+func (uc *GetPersonRelationshipsAscendantUsecase) buildTree(id string, person *entity.Person) ([]entity.Relationship, error) {
 	person, _ = uc.PersonRepository.FindById(id)
 	relationshipsIds, _ := uc.RelationshipRepository.GetRelationShipsIdsFromPersonId(id)
 

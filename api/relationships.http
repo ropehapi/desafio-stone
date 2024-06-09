@@ -8,4 +8,4 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:8000/tree/8a2b7099-97ef-48d1-97a1-948a2aa468ff HTTP/2
+GET http://localhost:8000/relationship/8a2b7099-97ef-48d1-97a1-948a2aa468ff/asc HTTP/2

@@ -15,21 +15,6 @@ func NewRelationshipRepository(db *sql.DB) *RelationshipRepository {
 	}
 }
 
-func (r *RelationshipRepository) Save(relationship *entity.Relationship) error {
-	stmt, err := r.DB.Prepare("INSERT INTO relationship (children_id, parent_id) VALUES (?, ?)")
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
-
-	_, err = stmt.Exec(relationship.Children.ID, relationship.Parent.ID)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func (r *RelationshipRepository) GetRelationShipsIdsFromPersonId(id string) ([]string, error) {
 	stmt, err := r.DB.Prepare("SELECT parent_id FROM relationship WHERE children_id=?")
 	if err != nil {
@@ -54,4 +39,33 @@ func (r *RelationshipRepository) GetRelationShipsIdsFromPersonId(id string) ([]s
 	}
 
 	return relationshipsIds, nil
+}
+
+func (r *RelationshipRepository) Save(relationship *entity.Relationship) error {
+	stmt, err := r.DB.Prepare("INSERT INTO relationship (children_id, parent_id) VALUES (?, ?)")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(relationship.Children.ID, relationship.Parent.ID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *RelationshipRepository) Delete(childrenId, parentId string) error {
+	stmt, err := r.DB.Prepare("DELETE FROM relationship WHERE children_id=? AND parent_id=?")
+	if err != nil {
+		return err
+	}
+
+	_, err = stmt.Exec(childrenId, parentId)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
