@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func TestPersonRepositorySaveAndFindById(t *testing.T) {
+func TestPersonRepository_Save_And_FindById(t *testing.T) {
 	db := configs.GetTestConn()
 	defer db.Close()
 
@@ -60,7 +60,7 @@ func TestPersonRepository_FindAll(t *testing.T) {
 	assert.Equal(t, len(persons), len(personsResult))
 }
 
-func TestPersonRepositoryUpdate(t *testing.T) {
+func TestPersonRepository_Update(t *testing.T) {
 	db := configs.GetTestConn()
 	defer db.Close()
 
@@ -83,7 +83,7 @@ func TestPersonRepositoryUpdate(t *testing.T) {
 	assert.Equal(t, "Pedro Oshimura", personDatabase.Name)
 }
 
-func TestPersonRepositoryDelete(t *testing.T) {
+func TestPersonRepository_Delete(t *testing.T) {
 	db := configs.GetTestConn()
 	defer db.Close()
 

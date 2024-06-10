@@ -6,17 +6,17 @@ import (
 )
 
 type RelationshipRepository struct {
-	DB *sql.DB
+	tx *sql.Tx
 }
 
-func NewRelationshipRepository(db *sql.DB) *RelationshipRepository {
+func NewRelationshipRepository(tx *sql.Tx) *RelationshipRepository {
 	return &RelationshipRepository{
-		DB: db,
+		tx: tx,
 	}
 }
 
 func (r *RelationshipRepository) GetParentIdsFromPersonId(id string) ([]string, error) {
-	stmt, err := r.DB.Prepare("SELECT parent_id FROM relationship WHERE children_id=?")
+	stmt, err := r.tx.Prepare("SELECT parent_id FROM relationship WHERE children_id=?")
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func (r *RelationshipRepository) GetParentIdsFromPersonId(id string) ([]string, 
 }
 
 func (r *RelationshipRepository) GetChildrenIdsFromPersonId(id string) ([]string, error) {
-	stmt, err := r.DB.Prepare("SELECT children_id FROM relationship WHERE parent_id=?")
+	stmt, err := r.tx.Prepare("SELECT children_id FROM relationship WHERE parent_id=?")
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func (r *RelationshipRepository) GetChildrenIdsFromPersonId(id string) ([]string
 }
 
 func (r *RelationshipRepository) Save(relationship *entity.Relationship) error {
-	stmt, err := r.DB.Prepare("INSERT INTO relationship (children_id, parent_id) VALUES (?, ?)")
+	stmt, err := r.tx.Prepare("INSERT INTO relationship (children_id, parent_id) VALUES (?, ?)")
 	if err != nil {
 		return err
 	}
@@ -83,7 +83,7 @@ func (r *RelationshipRepository) Save(relationship *entity.Relationship) error {
 }
 
 func (r *RelationshipRepository) Delete(childrenId, parentId string) error {
-	stmt, err := r.DB.Prepare("DELETE FROM relationship WHERE children_id=? AND parent_id=?")
+	stmt, err := r.tx.Prepare("DELETE FROM relationship WHERE children_id=? AND parent_id=?")
 	if err != nil {
 		return err
 	}
