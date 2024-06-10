@@ -2,10 +2,12 @@ POST http://localhost:8000/relationship HTTP/2
 Content-Type: application/json
 
 {
-  "childrenId": "",
-  "parentId": ""
+  "childrenId": "4fab833f-06be-46ad-a316-c308994a0efa",
+  "parentId": "940b52ee-e95c-4a4c-83af-04f4b3434b48"
 }
 
 ###
+GET http://localhost:8000/relationship/d44cdacb-b07f-4f22-999f-89b399e5e99c/asc HTTP/2
 
-GET http://localhost:8000/relationship/8a2b7099-97ef-48d1-97a1-948a2aa468ff/asc HTTP/2
+###
+GET http://localhost:8000/relationship/661d61f7-2a2c-48ac-a26f-fb43130f6b45/desc HTTP/2
