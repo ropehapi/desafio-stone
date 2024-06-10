@@ -7,10 +7,21 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/ropehapi/desafio-stone/configs"
+	_ "github.com/ropehapi/desafio-stone/docs"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"net/http"
 	"time"
 )
 
+//@title API Árvore genealógica
+//@version 1.0
+//@desciption API desenvolvida para o case técnico do processo seletivo da stone
+
+//@contact.name Pedro Yoshimura
+//@contact.email ropehapi@gmail.com
+
+// @host localhost:8000
+// @BasePath /
 func main() {
 	configs, err := configs.LoadConfig(".")
 	if err != nil {
@@ -40,6 +51,8 @@ func main() {
 	r.Get("/relationship/{id}/desc", webRelationshipHandler.GetRelationshipsDescendant)
 	r.Post("/relationship", webRelationshipHandler.Create)
 	r.Delete("/relationship", webRelationshipHandler.Delete)
+
+	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8000/docs/doc.json")))
 
 	err = http.ListenAndServe(configs.WebServerPort, r)
 	if err != nil {

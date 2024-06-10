@@ -1,0 +1,258 @@
+basePath: /
+definitions:
+  usecase.CreateRelationshipInputDTO:
+    properties:
+      childrenId:
+        type: string
+      parentId:
+        type: string
+    type: object
+  usecase.CreateUpdatePersonUsecaseInputDTO:
+    properties:
+      name:
+        type: string
+    type: object
+  usecase.DeleteRelationshipUsecaseInputDTO:
+    properties:
+      childrenId:
+        type: string
+      parentId:
+        type: string
+    type: object
+  web.Error:
+    properties:
+      message:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact:
+    email: ropehapi@gmail.com
+    name: Pedro Yoshimura
+  title: API Árvore genealógica
+  version: "1.0"
+paths:
+  /person:
+    get:
+      consumes:
+      - application/json
+      description: List person
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Error'
+      summary: List person
+      tags:
+      - persons
+    post:
+      consumes:
+      - application/json
+      description: Create person
+      parameters:
+      - description: person request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/usecase.CreateUpdatePersonUsecaseInputDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Error'
+      summary: Create person
+      tags:
+      - persons
+  /person/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete person
+      parameters:
+      - description: product ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Error'
+      summary: Delete person
+      tags:
+      - persons
+    get:
+      consumes:
+      - application/json
+      description: Get person
+      parameters:
+      - description: product ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Error'
+      summary: Get person
+      tags:
+      - persons
+    put:
+      consumes:
+      - application/json
+      description: Update person
+      parameters:
+      - description: product ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: person request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/usecase.CreateUpdatePersonUsecaseInputDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Error'
+      summary: Update person
+      tags:
+      - persons
+  /relationship:
+    delete:
+      consumes:
+      - application/json
+      description: Delete relationship
+      parameters:
+      - description: relationship request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/usecase.DeleteRelationshipUsecaseInputDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Error'
+      summary: Delete relationship
+      tags:
+      - relationship
+    post:
+      consumes:
+      - application/json
+      description: Create relationship
+      parameters:
+      - description: relationship request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/usecase.CreateRelationshipInputDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Error'
+      summary: Create relationship
+      tags:
+      - relationship
+  /relationship/{id}/asc:
+    get:
+      consumes:
+      - application/json
+      description: GetRelationshipsDescendant person
+      parameters:
+      - description: relationship ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Error'
+      summary: GetRelationshipsDescendant person
+      tags:
+      - relationship
+  /relationship/{id}/desc:
+    get:
+      consumes:
+      - application/json
+      description: GetRelationshipsDescendant person
+      parameters:
+      - description: relationship ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.Error'
+      summary: GetRelationshipsDescendant person
+      tags:
+      - relationship
+swagger: "2.0"
