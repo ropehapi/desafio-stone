@@ -27,43 +27,40 @@ func NewCreateRelationshipUsecase(personRepository entity.PersonRepositoryInterf
 	}
 }
 
-func (uc *CreateRelationshipUsecase) Execute(input CreateRelationshipInputDTO) (*CreateRelationshipOutputDTO, error) {
+func (uc *CreateRelationshipUsecase) Execute(input CreateRelationshipInputDTO) error {
 	if input.ChildrenId == input.ParentId {
-		return nil, errors.New("Cycle detected")
+		return errors.New("Cycle detected")
 	}
 
 	children, err := uc.PersonRepository.FindById(input.ChildrenId)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	parent, err := uc.PersonRepository.FindById(input.ParentId)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	err = uc.validateCycle(children.ID, parent.ID, children)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	err = uc.validateBrothers(children.ID, parent.ID)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	relationship := entity.NewRelationship(children, parent)
 	if err = relationship.IsValid(); err != nil {
-		return nil, err
+		return err
 	}
 
 	if err = uc.RelationshipRepository.Save(relationship); err != nil {
-		return nil, err
+		return err
 	}
 
-	return &CreateRelationshipOutputDTO{
-		ChildrenId: relationship.Children.ID,
-		ParentId:   relationship.Parent.ID,
-	}, err
+	return nil
 }
 
 func (uc *CreateRelationshipUsecase) validateCycle(id, parentId string, person *entity.Person) error {

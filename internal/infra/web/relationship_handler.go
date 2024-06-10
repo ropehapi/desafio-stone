@@ -64,18 +64,13 @@ func (h *WebRelationshipHandler) Create(w http.ResponseWriter, r *http.Request) 
 
 	createRelationshipUsecase := usecase.NewCreateRelationshipUsecase(h.PersonRepository, h.RelationshipRepository)
 
-	outputDto, err := createRelationshipUsecase.Execute(dto)
+	err = createRelationshipUsecase.Execute(dto)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	w.WriteHeader(http.StatusCreated)
-	err = json.NewEncoder(w).Encode(outputDto)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
 }
 
 func (h *WebRelationshipHandler) Delete(w http.ResponseWriter, r *http.Request) {
