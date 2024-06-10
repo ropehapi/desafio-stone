@@ -29,7 +29,7 @@ func NewCreateRelationshipUsecase(personRepository entity.PersonRepositoryInterf
 
 func (uc *CreateRelationshipUsecase) Execute(input CreateRelationshipInputDTO) error {
 	if input.ChildrenId == input.ParentId {
-		return errors.New("Cycle detected")
+		return errors.New("cycle detected")
 	}
 
 	children, err := uc.PersonRepository.FindById(input.ChildrenId)

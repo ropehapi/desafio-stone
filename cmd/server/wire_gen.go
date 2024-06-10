@@ -21,21 +21,21 @@ import (
 
 // Injectors from wire.go:
 
-func NewCreatePersonUseCase(db *sql.DB) *usecase.CreatePersonUseCase {
-	personRepository := database.NewPersonRepository(db)
+func NewCreatePersonUseCase(tx *sql.Tx) *usecase.CreatePersonUseCase {
+	personRepository := database.NewPersonRepository(tx)
 	createPersonUseCase := usecase.NewCreatePersonUseCase(personRepository)
 	return createPersonUseCase
 }
 
-func NewWebPersonHandler(db *sql.DB) *web.WebPersonHandler {
-	personRepository := database.NewPersonRepository(db)
+func NewWebPersonHandler(tx *sql.Tx) *web.WebPersonHandler {
+	personRepository := database.NewPersonRepository(tx)
 	webPersonHandler := web.NewWebPersonHandler(personRepository)
 	return webPersonHandler
 }
 
-func NewWebRelationshipHandler(db *sql.DB) *web.WebRelationshipHandler {
-	personRepository := database.NewPersonRepository(db)
-	relationshipRepository := database.NewRelationshipRepository(db)
+func NewWebRelationshipHandler(tx *sql.Tx) *web.WebRelationshipHandler {
+	personRepository := database.NewPersonRepository(tx)
+	relationshipRepository := database.NewRelationshipRepository(tx)
 	webRelationshipHandler := web.NewWebRelationshipHandler(personRepository, relationshipRepository)
 	return webRelationshipHandler
 }

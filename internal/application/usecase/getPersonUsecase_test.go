@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestCreatePersonUseCase_Get(t *testing.T) {
+func TestGetPersonUseCase_Execute(t *testing.T) {
 	db := configs.GetTestConn()
 	defer db.Close()
 

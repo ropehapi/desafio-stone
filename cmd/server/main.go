@@ -30,8 +30,11 @@ func main() {
 	db := configs.GetConn(*configsVar)
 	defer db.Close()
 
-	webPersonHandler := NewWebPersonHandler(db)
-	webRelationshipHandler := NewWebRelationshipHandler(db)
+	tx, err := db.Begin()
+	defer tx.Commit()
+
+	webPersonHandler := NewWebPersonHandler(tx)
+	webRelationshipHandler := NewWebRelationshipHandler(tx)
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
