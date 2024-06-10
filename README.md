@@ -34,6 +34,11 @@ ter em mãos um client http e importar a collection de requisições deixada na 
 Ainda assim, descreverei abaixo todos os endpoints a fins de documentação.
 
 ## Endpoints
+### Documentação OpenAPI
+- **Endpoint**: /docs/index.html#/
+- **Método**: GET
+- **Descrição**: Documentação OpenAPI visual da aplicação.
+
 ### Criar pessoa
 - **Endpoint**: `/person`
 - **Método**: POST
@@ -218,7 +223,6 @@ Ainda assim, descreverei abaixo todos os endpoints a fins de documentação.
 - [ ] Implementar testes
   - [x] Domínio aplicação
   - [x] Camada de persistencia
-  - [ ] Camada web
   - [ ] Usecases
 - [x] Documentar a aplicação com swagger
 - [ ] Conteinerizar a aplicação
