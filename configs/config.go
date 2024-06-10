@@ -29,3 +29,21 @@ func LoadConfig(path string) (*Config, error) {
 	}
 	return cfg, err
 }
+
+func LoadTestConfig(path string) (*Config, error) {
+	var cfg *Config
+	viper.SetConfigName("app_config")
+	viper.SetConfigType("env")
+	viper.AddConfigPath(path)
+	viper.SetConfigFile(".env.testing")
+	viper.AutomaticEnv()
+	err := viper.ReadInConfig()
+	if err != nil {
+		panic(err)
+	}
+	err = viper.Unmarshal(&cfg)
+	if err != nil {
+		panic(err)
+	}
+	return cfg, err
+}

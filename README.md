@@ -215,8 +215,12 @@ Ainda assim, descreverei abaixo todos os endpoints a fins de documentação.
   - [x] Crud de pessoa
   - [x] Crud de relacionamento
   - [x] Get tree
-- [ ] Implementar testes em tudo
+- [ ] Implementar testes
+  - [x] Domínio aplicação
+  - [x] Camada de persistencia
+  - [ ] Camada web
+  - [ ] Usecases
+- [x] Documentar a aplicação com swagger
 - [ ] Conteinerizar a aplicação
-- [ ] Documentar a aplicação com swagger
 - [ ] Documentar o projeto
 - [ ] Documentar o desenvolvimento (vídeo)

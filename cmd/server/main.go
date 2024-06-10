@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -23,15 +22,12 @@ import (
 // @host localhost:8000
 // @BasePath /
 func main() {
-	configs, err := configs.LoadConfig(".")
+	configsVar, err := configs.LoadConfig(".")
 	if err != nil {
 		panic(err)
 	}
 
-	db, err := sql.Open(configs.DBDriver, fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", configs.DBUser, configs.DBPass, configs.DBHost, configs.DBPort, configs.DBName))
-	if err != nil {
-		panic(err)
-	}
+	db := configs.GetConn(*configsVar)
 	defer db.Close()
 
 	webPersonHandler := NewWebPersonHandler(db)
@@ -54,9 +50,9 @@ func main() {
 
 	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8000/docs/doc.json")))
 
-	err = http.ListenAndServe(configs.WebServerPort, r)
+	err = http.ListenAndServe(configsVar.WebServerPort, r)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Starting web server on port", configs.WebServerPort)
+	fmt.Println("Starting web server on port", configsVar.WebServerPort)
 }

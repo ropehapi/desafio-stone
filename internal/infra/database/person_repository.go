@@ -6,17 +6,17 @@ import (
 )
 
 type PersonRepository struct {
-	DB *sql.DB
+	tx *sql.Tx
 }
 
-func NewPersonRepository(db *sql.DB) *PersonRepository {
+func NewPersonRepository(tx *sql.Tx) *PersonRepository {
 	return &PersonRepository{
-		DB: db,
+		tx: tx,
 	}
 }
 
 func (r *PersonRepository) Save(person *entity.Person) error {
-	stmt, err := r.DB.Prepare("INSERT INTO person (id, name) values(?,?)")
+	stmt, err := r.tx.Prepare("INSERT INTO person (id, name) values(?,?)")
 	if err != nil {
 		return err
 	}
@@ -30,7 +30,7 @@ func (r *PersonRepository) Save(person *entity.Person) error {
 }
 
 func (r *PersonRepository) FindById(id string) (*entity.Person, error) {
-	stmt, err := r.DB.Prepare("SELECT id, name FROM person WHERE id=?")
+	stmt, err := r.tx.Prepare("SELECT id, name FROM person WHERE id=?")
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +49,7 @@ func (r *PersonRepository) FindById(id string) (*entity.Person, error) {
 }
 
 func (r *PersonRepository) FindAll() ([]entity.Person, error) {
-	stmt, err := r.DB.Prepare("SELECT id, name FROM person")
+	stmt, err := r.tx.Prepare("SELECT id, name FROM person")
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +76,7 @@ func (r *PersonRepository) FindAll() ([]entity.Person, error) {
 }
 
 func (r *PersonRepository) Update(id string, p *entity.Person) error {
-	stmt, err := r.DB.Prepare("UPDATE person SET name=? WHERE id=?")
+	stmt, err := r.tx.Prepare("UPDATE person SET name=? WHERE id=?")
 	if err != nil {
 		return err
 	}
@@ -90,7 +90,7 @@ func (r *PersonRepository) Update(id string, p *entity.Person) error {
 }
 
 func (r *PersonRepository) Delete(id string) error {
-	stmt, err := r.DB.Prepare("DELETE FROM person WHERE id=?")
+	stmt, err := r.tx.Prepare("DELETE FROM person WHERE id=?")
 	if err != nil {
 		return err
 	}
