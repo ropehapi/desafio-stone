@@ -4,6 +4,9 @@ RUN_CMD = go run main.go wire_gen.go
 # Diretório do servidor
 SERVER_DIR = cmd/server
 
+# Nome do executável
+APP_NAME = desafio-stone
+
 # Regra padrão para rodar o servidor
 .PHONY: run
 run:
@@ -28,9 +31,9 @@ test:
 # Regra para build (opcional)
 .PHONY: build
 build:
-	cd $(SERVER_DIR) && go build -o server .
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -o $(APP_NAME) $(SERVER_DIR)/main.go $(SERVER_DIR)/wire_gen.go
 
 # Regra para rodar o build
 .PHONY: start
 start: build
-	./$(SERVER_DIR)/server
+	./$(APP_NAME)

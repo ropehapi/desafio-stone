@@ -5,10 +5,13 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 	"github.com/ropehapi/desafio-stone/configs"
 	_ "github.com/ropehapi/desafio-stone/docs"
 	httpSwagger "github.com/swaggo/http-swagger"
+	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -19,15 +22,15 @@ import (
 //@contact.name Pedro Yoshimura
 //@contact.email ropehapi@gmail.com
 
-// @host localhost:8000
+// @host localhost:8080
 // @BasePath /
 func main() {
-	configsVar, err := configs.LoadConfig(".")
+	err := godotenv.Load(".env")
 	if err != nil {
-		panic(err)
+		log.Fatal("Error loading .env file")
 	}
 
-	db := configs.GetConn(*configsVar)
+	db := configs.GetConn()
 	defer db.Close()
 
 	tx, err := db.Begin()
@@ -51,11 +54,11 @@ func main() {
 	r.Post("/relationship", webRelationshipHandler.Create)
 	r.Delete("/relationship", webRelationshipHandler.Delete)
 
-	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8000/docs/doc.json")))
+	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8080/docs/doc.json")))
 
-	err = http.ListenAndServe(configsVar.WebServerPort, r)
+	err = http.ListenAndServe(os.Getenv("WEB_SERVER_PORT"), r)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Starting web server on port", configsVar.WebServerPort)
+	fmt.Println("Starting web server on port", os.Getenv("WEB_SERVER_PORT"))
 }

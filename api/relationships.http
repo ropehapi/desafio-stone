@@ -1,4 +1,4 @@
-POST http://localhost:8000/relationship HTTP/2
+POST http://localhost:8080/relationship HTTP/2
 Content-Type: application/json
 
 {
@@ -7,7 +7,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8000/relationship/d44cdacb-b07f-4f22-999f-89b399e5e99c/asc HTTP/2
+GET http://localhost:8080/relationship/d44cdacb-b07f-4f22-999f-89b399e5e99c/asc HTTP/2
 
 ###
-GET http://localhost:8000/relationship/661d61f7-2a2c-48ac-a26f-fb43130f6b45/desc HTTP/2
+GET http://localhost:8080/relationship/661d61f7-2a2c-48ac-a26f-fb43130f6b45/desc HTTP/2

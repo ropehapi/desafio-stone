@@ -10,12 +10,18 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- -----------------------------------------------------
 -- Schema desafio_stone
 -- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `desafio_stone` ;
+
+-- -----------------------------------------------------
+-- Schema desafio_stone
+-- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `desafio_stone` DEFAULT CHARACTER SET utf8 ;
 USE `desafio_stone` ;
 
 -- -----------------------------------------------------
 -- Table `desafio_stone`.`person`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `desafio_stone`.`person` ;
 
 CREATE TABLE IF NOT EXISTS `desafio_stone`.`person` (
   `id` VARCHAR(36) NOT NULL,
@@ -23,11 +29,11 @@ CREATE TABLE IF NOT EXISTS `desafio_stone`.`person` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-INSERT INTO `desafio_stone`.`person` (id, name) values (uuid(), 'Pedro Yoshimura'), (uuid(), 'Pietra Yoshimura');
 
 -- -----------------------------------------------------
 -- Table `desafio_stone`.`relationship`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `desafio_stone`.`relationship` ;
 
 CREATE TABLE IF NOT EXISTS `desafio_stone`.`relationship` (
   `children_id` VARCHAR(36) NOT NULL,

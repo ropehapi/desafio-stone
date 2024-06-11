@@ -26,7 +26,17 @@ os endpoints de listagem de relacionamentos que podem trazer tanto de forma asce
 quanto descendente todos os relacionamentos de um indivíduo.
 
 ## Instalação
-TODO: Escrever documentação instalação
+Para rodar a aplicação você vai precisar do docker e do docker-compose instalados
+na sua máquina.
+
+Para subir o conteiner do banco de dados:
+> docker compose up -d --build
+
+Para rodar os testes:
+> make test
+
+Para compilar e rodar o projeto:
+> make build && make start
 
 ## Uso
 Para usar a aplicação basta instalar e rodar o projeto conforme o tópico anterior,
@@ -220,10 +230,10 @@ Ainda assim, descreverei abaixo todos os endpoints a fins de documentação.
   - [x] Crud de pessoa
   - [x] Crud de relacionamento
   - [x] Get tree
-- [ ] Implementar testes
+- [x] Implementar testes
   - [x] Domínio aplicação
   - [x] Camada de persistencia
-  - [ ] Usecases
+  - [x] Usecases
 - [x] Documentar a aplicação com swagger
 - [ ] Conteinerizar a aplicação
 - [ ] Documentar o projeto
