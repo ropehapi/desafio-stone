@@ -1,6 +1,9 @@
 package usecase
 
-import "github.com/ropehapi/desafio-stone/internal/entity"
+import (
+	"errors"
+	"github.com/ropehapi/desafio-stone/internal/entity"
+)
 
 type GetPersonRelationshipsDescendantUsecase struct {
 	PersonRepository       entity.PersonRepositoryInterface
@@ -29,6 +32,10 @@ func (uc *GetPersonRelationshipsDescendantUsecase) Execute(id string) (*GetPerso
 
 func (uc *GetPersonRelationshipsDescendantUsecase) buildTree(id string, person *entity.Person) ([]entity.Relationship, error) {
 	person, _ = uc.PersonRepository.FindById(id)
+	if person == nil {
+		return nil, errors.New("person not found")
+	}
+
 	relationshipsIds, _ := uc.RelationshipRepository.GetChildrenIdsFromPersonId(id)
 
 	numberOfRelationships := len(relationshipsIds)

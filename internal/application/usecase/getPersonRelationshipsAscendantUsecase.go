@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"errors"
 	"github.com/ropehapi/desafio-stone/internal/entity"
 )
 
@@ -22,6 +23,10 @@ func NewGetPersonRelationshipsAscendantUsecase(personRepository entity.PersonRep
 
 func (uc *GetPersonRelationshipsAscendantUsecase) Execute(id string) (*GetPersonTreeUsecaseOutputDTO, error) {
 	person, _ := uc.PersonRepository.FindById(id)
+	if person == nil {
+		return nil, errors.New("person not found")
+	}
+
 	relationships, err := uc.buildTree(id, person)
 	if err != nil {
 		return nil, err

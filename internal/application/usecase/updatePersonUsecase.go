@@ -1,6 +1,9 @@
 package usecase
 
-import "github.com/ropehapi/desafio-stone/internal/entity"
+import (
+	"errors"
+	"github.com/ropehapi/desafio-stone/internal/entity"
+)
 
 type UpdatePersonUsecase struct {
 	personRepository entity.PersonRepositoryInterface
@@ -19,6 +22,11 @@ func (uc UpdatePersonUsecase) Execute(id string, input CreateUpdatePersonUsecase
 
 	if err := person.IsValid(); err != nil {
 		return nil, err
+	}
+
+	_, err := uc.personRepository.FindById(id)
+	if err != nil {
+		return nil, errors.New("person not found")
 	}
 
 	if err := uc.personRepository.Update(id, person); err != nil {

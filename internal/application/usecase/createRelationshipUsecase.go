@@ -34,12 +34,12 @@ func (uc *CreateRelationshipUsecase) Execute(input CreateRelationshipInputDTO) e
 
 	children, err := uc.PersonRepository.FindById(input.ChildrenId)
 	if err != nil {
-		return err
+		return errors.New("error finding children")
 	}
 
 	parent, err := uc.PersonRepository.FindById(input.ParentId)
 	if err != nil {
-		return err
+		return errors.New("error finding parent")
 	}
 
 	err = uc.validateCycle(children.ID, parent.ID, children)

@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"errors"
 	"github.com/ropehapi/desafio-stone/internal/entity"
 )
 
@@ -15,6 +16,11 @@ func NewDeletePersonUseCase(personRepository entity.PersonRepositoryInterface) D
 }
 
 func (uc DeletePersonUseCase) Execute(id string) error {
+	_, err := uc.PersonRepository.FindById(id)
+	if err != nil {
+		return errors.New("person not found")
+	}
+
 	if err := uc.PersonRepository.Delete(id); err != nil {
 		return err
 	}
