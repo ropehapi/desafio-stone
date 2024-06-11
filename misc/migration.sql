@@ -23,8 +23,6 @@ CREATE TABLE IF NOT EXISTS `desafio_stone`.`person` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-INSERT INTO `desafio_stone`.`person` (id, name) values (uuid(), 'Pedro Yoshimura'), (uuid(), 'Pietra Yoshimura');
-
 -- -----------------------------------------------------
 -- Table `desafio_stone`.`relationship`
 -- -----------------------------------------------------

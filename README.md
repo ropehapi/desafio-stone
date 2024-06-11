@@ -7,11 +7,12 @@ alguns dias.*
 1. Visão geral
 2. Instalação
 3. Uso
-   - Endpoints
-     - BREAD de pessoa
-     - Criar relacionamento entre pai e filho
-     - Listar relacionamentos ascendentes indivíduo
-     - Listar relacionamentos descendentes indivíduo
+- Endpoints
+    - Documentação no Swagger
+    - BREAD de pessoa
+    - Criar relacionamento entre pai e filho
+    - Listar relacionamentos ascendentes indivíduo
+    - Listar relacionamentos descendentes indivíduo
 
 ## Visão geral
 Desenvolvida como a solução de um case técnico para o processo seletivo da Stone,
@@ -26,21 +27,25 @@ os endpoints de listagem de relacionamentos que podem trazer tanto de forma asce
 quanto descendente todos os relacionamentos de um indivíduo.
 
 ## Instalação
-Para rodar a aplicação você vai precisar do docker e do docker-compose instalados
-na sua máquina.
+Para rodar a aplicação localmente você vai precisar apenas do docker e do docker-compose
+instalados na sua máquina.
 
-Para subir o conteiner do banco de dados:
-> docker compose up -d --build
+1. Clone e acesse o diretório do repositório
+> git clone git@github.com:ropehapi/desafio-stone.git
 
-Para rodar os testes:
-> make test
+> cd desafio-stone/
 
-Para compilar e rodar o projeto:
-> make build && make start
+2. Configure as variáveis de ambiente conforme o desejado em `cmd/server/.env`
+
+3. Suba o conteiner da aplicação e do banco de dados
+> docker compose up --build
+
+4. Consuma a aplicação através do swagger em http://localhost:8080/docs/index.html#/
 
 ## Uso
-Para usar a aplicação basta instalar e rodar o projeto conforme o tópico anterior,
-ter em mãos um client http e importar a collection de requisições deixada na raiz do projeto.
+Para usar a aplicação basta instalar e rodar o projeto conforme o tópico anterior e utilizar os
+endpoints disponibilizados no swagger, ou ter em mãos um client http e importar a collection de
+requisições deixada dentro do diretório `misc`.
 Ainda assim, descreverei abaixo todos os endpoints a fins de documentação.
 
 ## Endpoints
@@ -216,8 +221,49 @@ Ainda assim, descreverei abaixo todos os endpoints a fins de documentação.
   }
 }
 ```
-  
-# Checklist durante o desenvolvimento
+---  
+# Nível de desenvolvimento
+## Testes
+Todas as três camadas da aplicação foram testadas, desde testes unitários na camada de domínio a testes
+de integração nas camadas de persistência e aplicação. Por conta de tempo fiquei devendo um conteiner
+para a execução de testes, mas caso deseje, você pode utilizar os comandos definidos no `makefile`
+para rodar os testes em seu ambiente.
+## Arquitetura empregada
+Abaixo farei uma breve descrição de como as camadas da aplicação foram delimitadas e
+como são seus funcionamentos.
+
+### Domain layer
+**Diretório**: `internal/entity`
+
+Camada onde residem os domínios da nossa aplicação, no caso `person` e `relationship`, é a
+camada responsável por prover toda a regra de negócio do nosso software para as demais camadas.
+Seguindo a filosofia de uma boa arquitetura, optei por definir no domínio da aplicação as interfaces
+dos repositórios de cada entidade, camada responsável pela comunicação com o banco, que devem ter
+suas implementações específicas na camada de infraestrutura.
+
+### Application layer
+**Diretório**: `internal/application`
+
+Camada onde foram implementados os usecases, que nada mais são os objetos que acessam e manipulam
+nosso domínio de forma a representar as intenções do usuário. Essa camada pode ser chamada a partir
+de qualquer forma de expor nossa aplicação na camada de infra (como REST, gRPC, CLI etc) e através de 
+injeção de dependências, manipula os repositórios dos nossos domínios.
+
+### Infrastucture layer
+**Diretório**: `internal/infra`
+
+Camada onde ficam as interfaces de comunicação com a WEB e com os  nossos bancos de dados, nas pastas 
+`web` e `database` respectivamente. Como nossa aplicação segue uma boa arquitetura, a forma como vamos
+expor nossa aplicação, o banco de dados em que faremos a persistência entre outros detalhes devem ser 
+apenas isso, detalhes, por isso, nessa camada implementamos a persitência no driver de banco de dados
+desejado seguindo a interface do nosso domínio, e também implementamos nossos handlers da web, responsáveis
+por receber requisições HTTP e a partir disso fazer o consumo dos usecases.
+
+## Conteiner de DI
+Afim de facilitar a injeção das dependências, optei por utilizar o [wire](https://github.com/google/wire),
+um conteiner de injeção de dependências.
+
+## Checklist durante o desenvolvimento em ordem
 - [x] Modelar banco de dados de acordo com a regra de negócio
 - [x] Escrever a camada de domínio
     - [x] Implementar validações
@@ -235,6 +281,7 @@ Ainda assim, descreverei abaixo todos os endpoints a fins de documentação.
   - [x] Camada de persistencia
   - [x] Usecases
 - [x] Documentar a aplicação com swagger
-- [ ] Conteinerizar a aplicação
-- [ ] Documentar o projeto
-- [ ] Documentar o desenvolvimento (vídeo)
+- [x] Conteinerizar a aplicação
+- [x] Documentar o projeto
+- [x] Documentar o desenvolvimento (vídeo)
+- [ ] (Extra) Montar um container para a execução dos testes
